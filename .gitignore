@@ -1,0 +1,11 @@
+backend/target
+backend/dist
+**/*.rs.bk
+Cargo.lock
+bin/
+pkg/
+wasm-pack.log
+backend/worker/
+backend/node_modules/
+backend/private
+.cargo-ok

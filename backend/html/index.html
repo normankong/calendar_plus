@@ -1,0 +1,39 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Google Calendar OAuth</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+</head>
+
+<body>
+    <div class="container my-3 bg-light">
+        <div class="col-md-12 text-center">
+            <button type="button" class="btn btn-primary" onclick="google()">Login with Google</button>
+        </div>
+    </div>
+</body>
+
+
+  <script type="text/javascript">
+
+    function google(){
+      location.assign(window.link);
+    }
+
+    async function getClientId(){
+
+      const redirectUri = 'https://calendar.normankong.workers.dev/oauth2callback'
+      const scope = 'profile email https://www.googleapis.com/auth/calendar.readonly https://www.googleapis.com/auth/calendar.events'
+      const responseType = 'code'
+
+      const response = await fetch('clientId')
+      const json = await response.json()
+      window.link = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${json.clientId}&redirect_uri=${redirectUri}&scope=${scope}&response_type=${responseType}&access_type=offline&include_granted_scopes=true`;
+    }
+    getClientId()
+
+  </script>
+</body>
+</html>
