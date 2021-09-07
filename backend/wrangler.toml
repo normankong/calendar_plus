@@ -9,3 +9,5 @@ kv_namespaces = [
   { binding = "FILES"       , id = "4bc7c278299a44109aa9fe514a750c01", preview_id = "4e428f44343849d39c0b044cf59ea960" },
   { binding = "CRENDENTIALS", id = "f2795d3174eb4bc293200816ea239420", preview_id = "2508d263c031440aa75988a816f7df38" }
 ]
+[triggers]
+crons = ["0 * * * *"]
