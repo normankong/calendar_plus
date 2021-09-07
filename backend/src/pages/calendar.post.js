@@ -34,7 +34,7 @@ async function listCalendars(token){
 
 
 async function updateCalendarId(email, id){
-	await FILES.put(email + "-calendar", id)
+	await FILES.put(`calendar-${email}`, id)
 }
 
 export default handler

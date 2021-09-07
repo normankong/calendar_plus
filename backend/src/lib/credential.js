@@ -43,7 +43,7 @@ export const getEmailFromHeader = async(headers, headerName = "token") => {
  * Assume return Token JSON Object
  */
 export const getAccessToken = async(email) => {
-	let token = await FILES.get(email + "-access")
+	let token = await FILES.get(`access-${email}`)
 	// console.log(`Access Token ${token}`)
 	return JSON.parse(token)
 }
@@ -52,18 +52,18 @@ export const getAccessToken = async(email) => {
  * Update Access Token into Cloudflare KV
  */
 async function _updateAccessToken (email, token) {
-	await FILES.put(email + "-access", token)
+	await FILES.put(`access-${email}`, token)
 }
 
 /**
  * Update Refresh Token into Cloudflare KV
  */
 export const _updateRefreshToken = async(email, token) => {
-	await FILES.put(email + "-refresh", token)
+	await FILES.put(`refresh-${email}`, token)
 }
 
 async function _getRefreshToken(email) {
-	return await FILES.get(email + "-refresh")
+	return await FILES.get(`refresh-${email}`)
 }
 
 /**
@@ -143,3 +143,27 @@ export const refreshAccessToken = async(email) => {
     await _updateAccessToken(email, JSON.stringify(token));
 	return token;
 }
+
+/**
+ * Sign a JWT Token
+ */
+export const signJWT = async(email) => {
+	let privateKey = await CRENDENTIALS.get("PRIVATE_KEY");
+	var token = jwt.sign({ email }, privateKey, { algorithm: 'RS256',  expiresIn: '1y' });
+	return token;
+}
+
+/**
+ * 
+ * @returns Get all the Refresh Token Email
+ */
+async function _getEmails(){
+  
+	// The default pagination is 1000
+	let entries = await FILES.list({prefix : "refresh-"});
+  
+	let emails = entries.keys.map(x => x.name.replace("refresh-", ""));
+  
+	return emails;
+}
+export const getEmails = _getEmails

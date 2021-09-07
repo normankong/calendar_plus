@@ -3,8 +3,7 @@ import * as credential from '../lib/credential'
 import fetch from 'node-fetch'
 import { objectToTable } from '../lib/objectToTable'
 
-
-export const route = '/calendar/'
+export const route = '/calendar/?'
 
 const handler = async (request) => {
 

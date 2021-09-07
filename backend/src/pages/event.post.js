@@ -13,7 +13,7 @@ const handler = async (request) => {
 	let requestJson = await request.json()
 
 	let calReq = await enrichRequest(requestJson)
-	let calendarId = await FILES.get(`${email}-calendar`)
+	let calendarId = await FILES.get(`calendar-${email}`)
 	let res = await insertEvent(token, calReq, calendarId)
 	
 	return response.json(res)

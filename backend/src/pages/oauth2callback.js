@@ -1,6 +1,5 @@
 import * as response from '../lib/responses'
 import * as credential from '../lib/credential'
-import { objectToTable } from '../lib/objectToTable'
 import fetch from 'node-fetch'
 
 export const route = '/oauth2callback?.*'
@@ -21,14 +20,11 @@ const handler = async request => {
   // Save OAuth Token and Refresh Token
   await credential.updateToken(email, token)
 
-  let result = []
-  Object.keys(userInfo).map(key => {
-    result[key] = userInfo[key]
-  })
+  let jwt = await credential.signJWT(email);
 
-  const html = `${objectToTable(result)} <br/><pre>${JSON.stringify(token, null, '\t')}</pre>`
+  let json = {jwt, userInfo, token};
 
-  return response.html(html)
+  return response.json(json)
 }
 
 async function getOAuthToken(code) {

@@ -1,10 +1,9 @@
 import * as response from '../lib/responses'
-import { objectToTable } from '../lib/objectToTable'
-import { refreshToken} from '../lib/refreshToken'
+import {refreshToken} from '../lib/refreshToken'
 import * as credential from '../lib/credential'
 import fetch from 'node-fetch'
 
-export const route = '/token/refresh'
+export const route = '/token/refresh/?'
 export const method = 'post'
 
 // Manual Endpoint to trigger Refresh Token
@@ -16,22 +15,18 @@ const handler = async (request) => {
         return response.json({error: "Access Denied"})
     }
 
-    // Refresh All TOken
+    // Refresh All Token
     let tokens = await refreshToken();
-    let result = [];
 
+    let result = [];
     for (let token of tokens){
 
         // Test Access Right
         const userInfo = await getUserInfo(token.access_token)
-        Object.keys(userInfo).map(key => {
-            result[key] = userInfo[key]
-        })
+        result.push(userInfo);
     }
 
-    const html = `${objectToTable(result)} <br/>`
-
-    return response.html(html)
+  return response.json(result)
 }
 
 async function getUserInfo(accessToken) {
