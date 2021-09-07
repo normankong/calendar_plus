@@ -1,15 +1,41 @@
 
 import jwt from 'jsonwebtoken'
 
+export const isAdmin = async(headers, headerName = "token") => {
+	try {
+		let email = await getEmailFromHeader(headers, headerName);
+		let admin = await CRENDENTIALS.get("ADMIN");
+		return (email == admin);
+	} catch(err) {
+		console.log(err)
+		return false;
+	}
+}
+
+
+/**
+ * Get the JWT Token from header
+ */
+ export const getJWTFromHeader = async(headers, headerName = "token") => {
+	try {
+		let map = new Map(headers)
+		let encrypted = map.get(headerName);
+		let publicKey = await _getPublicKey();
+		let token = jwt.verify(encrypted, publicKey);
+		return token;
+	} catch(err) {
+		console.log(`Something went wrong : ${err}`);
+		return null;
+	}
+}
+
 /**
  * Get Email Address from JWT Token, from Header
  */
 export const getEmailFromHeader = async(headers, headerName = "token") => {
-	let map = new Map(headers)
-	let token = map.get(headerName)
-	let PUBLIC_KEY = await CRENDENTIALS.get("PUBLIC_KEY");
-	let decrypted = jwt.verify(token, PUBLIC_KEY);
-	return decrypted.email
+	let jwt = await getJWTFromHeader(headers, headerName);
+	if (jwt != null) return jwt.email;
+	return null;
 }
 
 /**
@@ -53,6 +79,15 @@ export const updateToken = async (email, token) => {
 		await _updateRefreshToken(email, token.refresh_token)
 	}
 }
+
+/**
+ * Get Public Key
+ */
+ async function _getPublicKey() {
+	return await CRENDENTIALS.get("PUBLIC_KEY")
+}
+export const getPublicKey = _getPublicKey
+
 
 /**
  * Get Client ID

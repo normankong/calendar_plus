@@ -1,9 +1,25 @@
 import * as credential from '../lib/credential'
 
-export const refreshToken = obj => {
+export const refreshToken = async (obj) => {
+  
+  let emails = await getEmails();
+  let tokens = [];
 
-	const email = "normankong@gmail.com"
+  for (let email of emails){
+      // Refresh the Access Token
+      let token = await credential.refreshAccessToken(email);
+      tokens.push(token);
+  }
 
-    // Refresh the Access Token
-    credential.refreshAccessToken(email)
+  return tokens;
+}
+
+async function getEmails(){
+  
+  // The default pagination is 1000
+  let entries = await FILES.list();
+
+  let emails = entries.keys.filter(x=>x.name.includes("-refresh")).map(x => x.name.replace("-refresh", ""));
+
+  return emails;
 }
