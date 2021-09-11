@@ -21,7 +21,7 @@ addEventListener('scheduled', event => {
   
 async function handleSchedule(scheduledDate) {
 	console.log(`Start : ${scheduledDate}`);
-	await refreshToken(scheduledDate);
+	await refreshToken();
 	console.log(`End : ${scheduledDate}`);
 }
 

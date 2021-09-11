@@ -1,10 +1,10 @@
 import * as credential from '../lib/credential'
 
-export const refreshToken = async (time) => {
+export const refreshToken = async (refreshEmail) => {
   
-  console.log(`Refresh Token : ${time} started`);
+  console.log(`Refresh Token started`);
 
-  let emails = await credential.getEmails();
+  let emails = (refreshEmail != "ALL") ? [refreshEmail] : await credential.getEmails();
   let tokens = [];
 
   for (let email of emails){
@@ -13,7 +13,7 @@ export const refreshToken = async (time) => {
       tokens.push(token);
   }
 
-  console.log(`Refresh Token : ${time} completed`);
+  console.log(`Refresh Token completed`);
 
   return tokens;
 }

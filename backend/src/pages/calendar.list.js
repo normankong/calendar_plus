@@ -10,9 +10,13 @@ const handler = async (request) => {
 	let token = await credential.getAccessToken(email)
 	let res = await listCalendars(token)
 
-	let result = [];
-	res.items.map((item) => {
-		result[item.id] = item.summary;
+	// Format Result
+	let result = await res.items.map((item) => {
+		return {	
+			id : item.id,
+			description : item.description,
+			summary : item.summary
+		}
 	});
 
 	return response.json(result);
@@ -26,6 +30,7 @@ async function listCalendars(token){
 		  	}
 		}
 	)
+
 	return response.json();
 }
 
