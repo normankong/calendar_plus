@@ -26,10 +26,11 @@ wrangler kv:namespace create "CRENDENTIALS" --preview
 
 ## Tips : Command to Sync access token between environment
 ```
-wrangler kv:namespace list | jq '.[] | select(.title=="calendar-FILES")'         | jq .id -r | pbcopy
-wrangler kv:namespace list | jq '.[] | select(.title=="calendar-FILES_preview")' | jq .id -r | pbcopy
-wrangler kv:key get -n 4bc7c278299a44109aa9fe514a750c01 "normankong@gmail.com" | pbcopy
-wrangler kv:key put -n 4e428f44343849d39c0b044cf59ea960 "normankong@gmail.com" "`pbpaste`"
+wrangler kv:key get -n 4bc7c278299a44109aa9fe514a750c01 "access-<EMAIL>" | pbcopy
+wrangler kv:key put -n 4e428f44343849d39c0b044cf59ea960 "access-<EMAIL>" "`pbpaste`"
+
+wrangler kv:key get -n 4bc7c278299a44109aa9fe514a750c01 "refresh-<EMAIL>" | pbcopy
+wrangler kv:key put -n 4e428f44343849d39c0b044cf59ea960 "refresh-<EMAIL>" "`pbpaste`"
 ```
 
 Further documentation for Wrangler can be found [here](https://developers.cloudflare.com/workers/tooling/wrangler).

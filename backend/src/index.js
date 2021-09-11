@@ -13,9 +13,18 @@ addEventListener('fetch', event => {
 	event.respondWith(handleRequest(event.request))
 })
 
-addEventListener("scheduled", event => {
-	event.waitUntil(refreshToken(event))
-})
+addEventListener('scheduled', event => {
+	event.waitUntil(
+	  handleSchedule(event.scheduledTime)
+	);
+  })
+  
+async function handleSchedule(scheduledDate) {
+	console.log(`Start : ${scheduledDate}`);
+	await refreshToken(scheduledDate);
+	console.log(`End : ${scheduledDate}`);
+}
+
 
 /**
  * Respond with hello worker text

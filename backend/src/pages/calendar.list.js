@@ -1,7 +1,6 @@
 import * as response from '../lib/responses'
 import * as credential from '../lib/credential'
 import fetch from 'node-fetch'
-import { objectToTable } from '../lib/objectToTable'
 
 export const route = '/calendar/?'
 
@@ -16,9 +15,7 @@ const handler = async (request) => {
 		result[item.id] = item.summary;
 	});
 
-	const html = objectToTable(result)
-
-	return response.html(html)
+	return response.json(result);
 }
 
 async function listCalendars(token){
@@ -29,8 +26,7 @@ async function listCalendars(token){
 		  	}
 		}
 	)
-	return response.json()
+	return response.json();
 }
-
 
 export default handler
